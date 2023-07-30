@@ -2,42 +2,32 @@ package slowreader
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 	"testing"
 )
-
-/*func TestJsonValue(t *testing.T) {
-
-	var buffer string
-	for i := 0; i < 20; i++ {
-		buffer += GiveAllarm()
-	}
-	fmt.Println(buffer)
-
-	reader := NewSlowReader(128, strings.NewReader(buffer))
-
-	decoder := json.NewDecoder(&reader)
-
-	var allarm Allarm
-	for decoder.More() {
-
-		e := decoder.Decode(&allarm)
-		if e != nil {
-			t.Fatal(e)
-		}
-
-		fmt.Println(allarm)
-	}
-}*/
 
 func TestArray(t *testing.T) {
 
 	ar := GiveAllarmArray(20)
 
-	reader := NewSlowReader(128, strings.NewReader(ar))
+	reader := NewSlowReader(512, strings.NewReader(ar))
 
 	decoder := json.NewDecoder(&reader)
 
-	decoder.Token()
+	token, _ := decoder.Token()
+	a := fmt.Sprintf("%v", token)
 
+	if a == "[" {
+		var allarm Allarm
+
+		for decoder.More() {
+			err := decoder.Decode(&allarm)
+			if err != nil {
+				fmt.Println(err)
+				break
+			}
+			fmt.Println(allarm)
+		}
+	}
 }
