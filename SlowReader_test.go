@@ -9,9 +9,9 @@ import (
 
 func TestArray(t *testing.T) {
 
-	ar := GiveAllarmArray(20)
+	ar := GiveAllarmArray(100)
 
-	reader := NewSlowReader(512, strings.NewReader(ar))
+	reader := NewSlowReader(1024, strings.NewReader(ar))
 
 	decoder := json.NewDecoder(&reader)
 

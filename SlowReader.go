@@ -16,7 +16,11 @@ func NewSlowReader(bytesPerSecond int, r io.Reader) SlowReader {
 }
 
 func (r *SlowReader) Read(b []byte) (int, error) {
-	buffer := b[0:r.bps]
+	l := r.bps
+	if len(b) < l {
+		l = len(b)
+	}
+	buffer := b[0:l]
 	time.Sleep(1 * time.Second)
 	s, e := r.r.Read(buffer)
 	return s, e
