@@ -1,4 +1,4 @@
-module slowreader
+module github.com/beppune/slowreader
 
 go 1.16
 
